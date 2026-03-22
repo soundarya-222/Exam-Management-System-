@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { updateProfile } from "../../services/examService";
+import "./TeacherProfile.css";
 
 function getInitials(name = "") {
   return name

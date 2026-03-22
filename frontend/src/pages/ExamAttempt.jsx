@@ -27,7 +27,7 @@ export default function ExamAttempt({ exam, onComplete }) {
       try {
         const submissionData = {
           examId: exam._id,
-          userId: user?._id,
+          studentId: user?._id,
           answers: Object.entries(answers).map(([questionId, answer]) => ({
             questionId,
             answer,
@@ -80,7 +80,7 @@ export default function ExamAttempt({ exam, onComplete }) {
     <div style={{ padding: "20px" }}>
       <h2>Exam Attempt</h2>
 
-      <p><strong>User:</strong> {user?.name || "Guest"}</p>
+      <p><strong>User:</strong> {user?.fullname ? `${user.fullname.firstname} ${user.fullname.lastname || ''}`.trim() : "Guest"}</p>
       <p><strong>Time Left:</strong> {formatTime(timeLeft)}</p>
 
       <hr />
@@ -91,7 +91,7 @@ export default function ExamAttempt({ exam, onComplete }) {
       <p>{currentQuestion?.questionText}</p>
 
       {/* MCQ */}
-      {currentQuestion?.type === "mcq" &&
+      {currentQuestion?.type === "MCQ" &&
         currentQuestion.options.map((opt, idx) => (
           <div key={idx}>
             <label>
@@ -108,8 +108,8 @@ export default function ExamAttempt({ exam, onComplete }) {
         ))}
 
       {/* Text / Coding */}
-      {(currentQuestion?.type === "text" ||
-        currentQuestion?.type === "coding") && (
+      {(currentQuestion?.type === "THEORY" ||
+        currentQuestion?.type === "CODING") && (
         <textarea
           rows="5"
           cols="50"

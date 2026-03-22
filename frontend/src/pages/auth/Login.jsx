@@ -28,12 +28,7 @@ const Login = () => {
       // Update AuthContext
       login({ ...data.user, role: normalizedRole }, data.token)
 
-      if (normalizedRole === 'teacher') {
-        navigate('/teacher/dashboard', { replace: true })
-        return
-      }
-
-      navigate('/student/dashboard', { replace: true })
+      navigate('/', { replace: true })
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials. Please try again.')
     } finally {

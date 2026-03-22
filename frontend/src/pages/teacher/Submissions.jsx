@@ -18,7 +18,10 @@ function LongAnswerGrader({ submission, onGraded }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const longAnswers = submission?.answers?.filter((a) => a.type === "long") || [];
+  const longAnswers = submission?.answers?.filter((a) => {
+    const question = submission?.exam?.questions?.find(q => q._id === a.questionId);
+    return question?.type === 'THEORY' || question?.type === 'CODING';
+  }) || [];
 
   const handleGrade = async () => {
     setSaving(true);

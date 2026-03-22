@@ -19,7 +19,7 @@ export default function Sidebar({ activePage, onNavigate, isOpen, onClose }) {
 
   const student = {
     name: user?.fullname ? `${user.fullname.firstname} ${user.fullname.lastname}` : user?.name,
-    role: user?.role || "student",
+    role: user?.role,
   };
 
   const handleNav = (id) => {
@@ -54,8 +54,8 @@ export default function Sidebar({ activePage, onNavigate, isOpen, onClose }) {
             {getInitials(student?.name)}
           </div>
           <div className="sidebar__student-info">
-            <div className="sidebar__student-name">{student?.name || 'Guest'}</div>
-            <div className="sidebar__student-role">{student?.role?.toUpperCase() || 'STUDENT'}</div>
+            <div className="sidebar__student-name">{student?.name}</div>
+            <div className="sidebar__student-role">{student?.role?.toUpperCase()}</div>
           </div>
         </div>
 

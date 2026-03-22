@@ -18,11 +18,33 @@ const Register = () => {
     setError('')
     setLoading(true)
 
+    // Client-side validation
+    if (name.trim().length < 3) {
+      setError('Name must be at least 3 characters long')
+      setLoading(false)
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long')
+      setLoading(false)
+      return
+    }
+
     try {
-      await registerUser({ fullname: {firstname: name.split(' ')[0], lastname: name.split(' ').slice(1).join(' ') || name}, email, password, role })
+      const nameParts = name.trim().split(' ');
+      const firstname = nameParts[0] || '';
+      const lastname = nameParts.slice(1).join(' ') || '';
+      
+      await registerUser({ fullname: {firstname, lastname}, email, password, role })
       navigate('/login')
     } catch (err) {
-      setError(err.response?.data?.message || 'Unable to register. Please try again.')
+      console.error('Registration error:', err);
+      const errorMessage = err.response?.data?.message || 
+                          (err.response?.data?.errors && err.response.data.errors[0]?.msg) || 
+                          err.message ||
+                          'Unable to register. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false)
     }
@@ -41,7 +63,7 @@ const Register = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-placeholder="First Last Name (required for both)"
+            placeholder="Full Name (e.g., John Doe)"
             required
           />
 

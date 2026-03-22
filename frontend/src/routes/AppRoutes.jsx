@@ -25,16 +25,7 @@ const ProtectedRoute = ({ element, requiredRole }) => {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          getToken()
-            ? getRole()?.toLowerCase() === 'teacher'
-              ? <Navigate to="/teacher/dashboard" replace />
-              : <Navigate to="/student/dashboard" replace />
-            : <Home />
-        }
-      />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route
@@ -43,7 +34,7 @@ const AppRoutes = () => {
       />
       <Route
         path="/teacher/dashboard"
-        element={<TeacherDashboard />} 
+        element={<ProtectedRoute element={<TeacherDashboard />} requiredRole="teacher" />}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
