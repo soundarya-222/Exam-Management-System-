@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchExams, fetchSubmissions, fetchStudents } from "../../services/examService";
-
 export default function TeacherHome({ onNavigate }) {
   const { token } = useAuth();
 
