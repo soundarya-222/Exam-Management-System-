@@ -1,0 +1,48 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard__main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard__content {
+  margin-top: var(--navbar-height);
+  padding: 2rem;
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.dashboard__page-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard__page-title {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-seri;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.dashboard__page-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .dashboard__main {
+    margin-left: 0;
+  }
+
+  .dashboard__content {
+    padding: 1.25rem 1rem;
+  }
+}

@@ -1,0 +1,59 @@
+const userModel = require('../models/userModel');
+const userService = require('../services/userService');
+const { validationResult } = require('express-validator');
+const blacklistTokenModel = require('../models/blacklistTokenModel');
+
+// register a new user and return a JWT token
+module.exports.registerUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { fullname, email, password } = req.body;
+
+    try {
+        const user = await userService.createUser({
+             firstname: fullname.firstname, lastname: fullname.lastname, email, password });
+        const token = user.generateAuthToken();
+        res.status(201).json({ token, user });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// authenticate an existing user and return a token
+module.exports.loginUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+    try {
+        const user = await userService.findByEmail(email);
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        const isValid = await user.comparePassword(password);
+        if (!isValid) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        const token = user.generateAuthToken();
+        res.cookie('token', token); 
+
+        res.json({ token, user });
+    } catch (err) {
+        next(err);
+    }
+};
+
+//logout
+module.exports.logoutUser = async (req, res, next) => {
+    res.clearCookie('token');
+    const token= req.cookies.token || req.headers.authorization.split(' ')[1];
+    await blacklistTokenModel.create({ token });
+    res.json({ message: 'Logged out successfully' });
+};

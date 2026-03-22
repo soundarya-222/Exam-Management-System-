@@ -1,0 +1,23 @@
+// Teacher detailes
+
+{
+    "fullname": {
+        "firstname": "Madhav",
+        "lastname": "Pawar"
+
+    },
+    "email": "Madhav12@test.com",
+    "password": "Madhav123",
+    "role" : "Teacher"
+}
+
+
+
+
+//student detailes
+{
+
+     "email": "Ram12@test.com",
+    "password": "Ram123"
+}
+

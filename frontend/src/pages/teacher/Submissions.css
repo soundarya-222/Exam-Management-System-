@@ -1,0 +1,36 @@
+.lag-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.lag-header { border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+.lag-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem;
+}
+.lag-answer {
+  padding: 1.25rem;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.lag-q-text { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+.lag-student-ans {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.lag-marks { flex-direction: row; align-items: center; gap: 0.75rem; }
