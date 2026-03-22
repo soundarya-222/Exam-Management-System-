@@ -17,7 +17,7 @@ router.get(
 router.post(
     '/grade',
     authMiddleware.authUser,
-    roleMiddleware.requireRole(['Teacher']),
+    roleMiddleware.requireRole(['teacher']),
     [
         body('submissionId').notEmpty().withMessage('submissionId is required'),
         body('marks').isArray({ min: 1 }).withMessage('marks must be a non-empty array'),

@@ -7,7 +7,7 @@ async function hashPassword(password) {
     return bcrypt.hash(password, salt);
 }
 
-async function createUser({ firstname, lastname, email, password }) {
+async function createUser({ firstname, lastname, email, password, role = 'student' }) {
     if (!firstname || !lastname || !email || !password) {
         throw new Error('All fields are required');
     }
@@ -16,7 +16,8 @@ async function createUser({ firstname, lastname, email, password }) {
     const user = new userModel({
         fullname: { firstname, lastname },
         email,
-        password: hashed
+        password: hashed,
+        role
     });
 
     return user.save();

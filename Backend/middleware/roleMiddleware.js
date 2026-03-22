@@ -8,7 +8,11 @@ module.exports.requireRole = function(roles) {
         if (!Array.isArray(roles)) {
             roles = [roles];
         }
-        if (!roles.includes(req.user.role)) {
+
+        const userRole = (req.user.role || '').toLowerCase();
+        const normalizedRoles = roles.map((r) => String(r).toLowerCase());
+
+        if (!normalizedRoles.includes(userRole)) {
             return res.status(403).json({ message: 'Forbidden: insufficient role' });
         }
         next();

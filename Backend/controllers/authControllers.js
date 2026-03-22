@@ -10,11 +10,16 @@ module.exports.registerUser = async (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { fullname, email, password } = req.body;
+    const { fullname, email, password, role } = req.body;
 
     try {
         const user = await userService.createUser({
-             firstname: fullname.firstname, lastname: fullname.lastname, email, password });
+             firstname: fullname.firstname,
+             lastname: fullname.lastname,
+             email,
+             password,
+             role: role || 'student'
+        });
         const token = user.generateAuthToken();
         res.status(201).json({ token, user });
     } catch (err) {
@@ -53,7 +58,9 @@ module.exports.loginUser = async (req, res, next) => {
 //logout
 module.exports.logoutUser = async (req, res, next) => {
     res.clearCookie('token');
-    const token= req.cookies.token || req.headers.authorization.split(' ')[1];
-    await blacklistTokenModel.create({ token });
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    if (token) {
+        await blacklistTokenModel.create({ token });
+    }
     res.json({ message: 'Logged out successfully' });
 };

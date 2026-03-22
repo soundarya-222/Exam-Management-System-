@@ -19,7 +19,7 @@ const Register = () => {
     setLoading(true)
 
     try {
-await registerUser({ fullname: {firstname: name.split(' ')[0], lastname: name.split(' ').slice(1).join(' ') || name}, email, password })
+      await registerUser({ fullname: {firstname: name.split(' ')[0], lastname: name.split(' ').slice(1).join(' ') || name}, email, password, role })
       navigate('/login')
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to register. Please try again.')

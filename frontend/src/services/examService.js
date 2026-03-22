@@ -1,4 +1,4 @@
-const API = "";
+const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
 const apiFetch = async (url, options = {}, token = "") => {
   const res = await fetch(url, {
@@ -42,6 +42,7 @@ export const publishResult = (id, token) =>
 export const fetchExamResults = (examId, token) =>
   apiFetch(`${API}/results/exam/${examId}`, {}, token);
 export const fetchStudentById = (id, token) => apiFetch(`${API}/users/students/${id}`, {}, token);
+export const fetchStudents = (token) => apiFetch(`${API}/users/students`, {}, token);
 
 export const updateProfile = (payload, token) =>
   apiFetch(`${API}/users/profile`, { method: "PUT", body: JSON.stringify(payload) }, token);

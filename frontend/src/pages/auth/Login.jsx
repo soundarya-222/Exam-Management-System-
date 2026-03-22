@@ -21,23 +21,19 @@ const Login = () => {
 
     try {
       const data = await loginUser({ email, password })
+      const normalizedRole = ((data.user?.role || data.role || 'student') + '').toLowerCase()
       setToken(data.token)
-      setRole(data.user.role)
+      setRole(normalizedRole)
 
       // Update AuthContext
-      login(data.user, data.token)
+      login({ ...data.user, role: normalizedRole }, data.token)
 
-      if (data.user.role === 'student') {
-        navigate('/student/dashboard')
+      if (normalizedRole === 'teacher') {
+        navigate('/teacher/dashboard', { replace: true })
         return
       }
 
-      if (data.user.role === 'teacher') {
-        navigate('/teacher/dashboard')
-        return
-      }
-
-      navigate('/')
+      navigate('/student/dashboard', { replace: true })
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials. Please try again.')
     } finally {

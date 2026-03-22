@@ -15,7 +15,7 @@ const ProtectedRoute = ({ element, requiredRole }) => {
     return <Navigate to="/login" replace />
   }
 
-  if (requiredRole && role !== requiredRole) {
+  if (requiredRole && role?.toLowerCase() !== requiredRole?.toLowerCase()) {
     return <Navigate to="/" replace />
   }
 
@@ -25,12 +25,21 @@ const ProtectedRoute = ({ element, requiredRole }) => {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={
+          getToken()
+            ? getRole()?.toLowerCase() === 'teacher'
+              ? <Navigate to="/teacher/dashboard" replace />
+              : <Navigate to="/student/dashboard" replace />
+            : <Home />
+        }
+      />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route
         path="/student/dashboard"
-        element={<StudentDashboard />} 
+        element={<ProtectedRoute element={<StudentDashboard />} requiredRole="student" />}
       />
       <Route
         path="/teacher/dashboard"

@@ -34,7 +34,7 @@ module.exports.getMySubmissions = async (req, res, next) => {
 };
 
 module.exports.getSubmissionsByExam = async (req, res, next) => {
-    if (req.user.role !== 'Teacher') {
+    if (req.user.role !== 'teacher') {
         return res.status(403).json({ message: 'Forbidden: teachers only' });
     }
 
@@ -48,7 +48,7 @@ module.exports.getSubmissionsByExam = async (req, res, next) => {
 };
 
 module.exports.evaluateSubmission = async (req, res, next) => {
-    if (req.user.role !== 'Teacher') {
+    if (req.user.role !== 'teacher') {
         return res.status(403).json({ message: 'Forbidden: teachers only' });
     }
 
