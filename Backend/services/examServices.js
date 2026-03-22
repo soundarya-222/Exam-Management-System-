@@ -29,10 +29,16 @@ async function deleteExam(id) {
   return examRepo.deleteExam(id);
 }
 
+async function publishExam(id) {
+  if (!id) throw new Error('Exam id is required');
+  return examRepo.publishExam(id);
+}
+
 module.exports = {
   createExam,
   getExams,
   getExamById,
   updateExam,
   deleteExam,
+  publishExam,
 };

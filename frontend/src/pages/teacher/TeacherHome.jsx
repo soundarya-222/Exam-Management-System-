@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchExams, fetchSubmissions, fetchStudents } from "../../services/examService";
+import { fetchExams, fetchSubmissions, fetchStudents } from "../services/examService";
 export default function TeacherHome({ onNavigate }) {
   const { token } = useAuth();
 
@@ -106,6 +106,10 @@ export default function TeacherHome({ onNavigate }) {
 
           <button className="btn btn-ghost" onClick={() => onNavigate("submissions")}>
             📋 Review Submissions
+          </button>
+
+          <button className="btn btn-ghost" onClick={() => onNavigate("results")}>
+            📊 View Results
           </button>
 
           <button className="btn btn-ghost" onClick={() => onNavigate("students")}>

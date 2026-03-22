@@ -67,16 +67,13 @@ function StudentDetail({ student, onBack }) {
 export default function Students() {
   const { token } = useAuth();
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState("");
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
 
     fetchStudents(token)
       .then((d) => setStudents(Array.isArray(d?.students) ? d.students : []))

@@ -118,9 +118,39 @@ async function getSubmissionsByExam(examId) {
     return submissionRepo.findByExam(examId);
 }
 
+async function getPublishedSubmissionsByStudent(studentId) {
+    if (!studentId) {
+        throw new Error('Student ID is required');
+    }
+    return submissionRepo.findPublishedByStudent(studentId);
+}
+
+async function publishResult(submissionId) {
+    if (!submissionId) {
+        throw new Error('Submission ID is required');
+    }
+
+    const submission = await submissionRepo.findById(submissionId);
+    if (!submission) {
+        throw new Error('Submission not found');
+    }
+
+    if (submission.status !== 'checked') {
+        throw new Error('Submission must be evaluated before publishing');
+    }
+
+    const updated = await submissionRepo.update(submissionId, {
+        published: true
+    });
+
+    return updated;
+}
+
 module.exports = {
     submitExam,
     evaluateSubmission,
     getSubmissionsByStudent,
-    getSubmissionsByExam
+    getSubmissionsByExam,
+    getPublishedSubmissionsByStudent,
+    publishResult
 };

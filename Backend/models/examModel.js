@@ -5,6 +5,13 @@ const examSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    subject: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String
+    },
     type: {
         type: String,
         enum: ['MCQ', 'LONG'],
@@ -19,6 +26,19 @@ const examSchema = new mongoose.Schema({
     totalMarks: {
         type: Number,
         default: 0
+    },
+    duration: {
+        type: Number, // in minutes
+        default: 60
+    },
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        default: 'draft'
+    },
+    teacher: {
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,

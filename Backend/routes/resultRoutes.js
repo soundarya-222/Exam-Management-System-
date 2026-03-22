@@ -36,4 +36,13 @@ router.get(
     resultController.getExamResults
 );
 
+// teacher publishes a result
+router.put(
+    '/publish/:submissionId',
+    authMiddleware.authUser,
+    roleMiddleware.requireRole(['Teacher']),
+    [param('submissionId').notEmpty().withMessage('submissionId parameter is required')],
+    resultController.publishResult
+);
+
 module.exports = router;

@@ -49,3 +49,11 @@ exports.deleteExam = async (id) => {
   return await Exam.findByIdAndDelete(id).lean();
 };
 
+exports.publishExam = async (id) => {
+  return await Exam.findByIdAndUpdate(
+    id,
+    { status: 'published' },
+    { new: true }
+  ).lean();
+};
+

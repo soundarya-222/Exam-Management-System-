@@ -37,6 +37,10 @@ const submissionSchema = new mongoose.Schema({
         enum: ['pending', 'checked'],
         default: 'pending'
     },
+    published: {
+        type: Boolean,
+        default: false
+    },
     submittedAt: {
         type: Date,
         default: Date.now

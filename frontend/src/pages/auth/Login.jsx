@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../../services/authService'
-import { getRole, setRole, setToken } from '../../utils/auth'
+import { setRole, setToken } from '../../utils/auth'
+import { useAuth } from '../../context/AuthContext'
 import '../../styles/auth.css'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRoleState] = useState('student')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -19,16 +20,19 @@ const Login = () => {
     setLoading(true)
 
     try {
-const data = await loginUser({ email, password })
+      const data = await loginUser({ email, password })
       setToken(data.token)
-setRole(data.user.role)
+      setRole(data.user.role)
 
-if (data.user.role === 'student') {
+      // Update AuthContext
+      login(data.user, data.token)
+
+      if (data.user.role === 'student') {
         navigate('/student/dashboard')
         return
       }
 
-if (data.user.role === 'teacher') {
+      if (data.user.role === 'teacher') {
         navigate('/teacher/dashboard')
         return
       }
@@ -45,7 +49,7 @@ if (data.user.role === 'teacher') {
     <div className="auth-page">
       <div className="auth-card">
         <h2>Login</h2>
-        <p className="small">Login as student or teacher</p>
+        <p className="small">Login to your account</p>
 
         <form className="auth-form" onSubmit={handleLogin}>
           <label htmlFor="email">Email</label>
@@ -68,12 +72,6 @@ if (data.user.role === 'teacher') {
             required
           />
 
-          <label htmlFor="role">Role</label>
-          <select id="role" value={role} onChange={(e) => setRoleState(e.target.value)}>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-          </select>
-
           {error && <div className="error-text">{error}</div>}
 
           <button type="submit" className="auth-btn" disabled={loading}>
@@ -85,10 +83,6 @@ if (data.user.role === 'teacher') {
           <p>
             Don't have an account? <a href="/register">Create account</a>
           </p>
-        </div>
-
-        <div className="current-role">
-          Current role in storage: <strong>{getRole() || 'none'}</strong>
         </div>
       </div>
     </div>

@@ -48,3 +48,12 @@ exports.deleteExam = async (req, res) => {
   }
 };
 
+exports.publishExam = async (req, res) => {
+  try {
+    const exam = await examService.publishExam(req.params.id);
+    res.json(exam);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

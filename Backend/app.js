@@ -7,7 +7,7 @@ const connectDB = require('./db/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const submissionRoutes = require('./routes/submissionRoutes');
-const examRoutes = require('./routes/exam');
+const examRoutes = require('./routes/examRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 const resultRoutes = require('./routes/resultRoutes');
 

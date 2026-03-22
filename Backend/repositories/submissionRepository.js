@@ -20,6 +20,10 @@ module.exports.findById = function(id) {
     return Submission.findById(id);
 };
 
+module.exports.findPublishedByStudent = function(studentId) {
+    return Submission.find({ studentId, published: true });
+};
+
 module.exports.update = function(id, changes) {
     return Submission.findByIdAndUpdate(id, changes, { new: true });
 };

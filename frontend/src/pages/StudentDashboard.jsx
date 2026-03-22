@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Profile from "./Profile/Profile";
 import Exams from "./Exams/Exams";
 import Results from "./Results/Results";
+import ExamAttempt from "./ExamAttempt";
 import "../styles/dashboard.css";
 import "../styles/Global.css";
 
@@ -25,8 +26,26 @@ const PAGE_META = {
 export default function StudentDashboard() {
   const [activePage, setActivePage] = useState("profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [attemptingExam, setAttemptingExam] = useState(null);
 
   const meta = PAGE_META[activePage];
+
+  const handleAttemptExam = (exam) => {
+    setAttemptingExam(exam);
+  };
+
+  const handleExamComplete = () => {
+    setAttemptingExam(null);
+    setActivePage("exams"); // Return to exams page
+  };
+
+  if (attemptingExam) {
+    return (
+      <div className="dashboard">
+        <ExamAttempt exam={attemptingExam} onComplete={handleExamComplete} />
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
@@ -50,7 +69,7 @@ export default function StudentDashboard() {
           </div>
 
           {activePage === "profile" && <Profile />}
-          {activePage === "exams"   && <Exams />}
+          {activePage === "exams"   && <Exams onAttemptExam={handleAttemptExam} />}
           {activePage === "results" && <Results />}
         </main>
       </div>

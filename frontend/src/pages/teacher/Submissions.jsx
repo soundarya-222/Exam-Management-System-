@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchSubmissions, gradeSubmission } from "../../services/examService";
+import { fetchSubmissions, gradeSubmission, publishResult } from "../../services/examService";
 
 function ScoreBar({ pct }) {
   return (
@@ -99,8 +99,9 @@ export default function Submissions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selected, setSelected] = useState(null);
+  const [publishing, setPublishing] = useState(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const d = await fetchSubmissions(token);
       setSubmissions(Array.isArray(d?.submissions) ? d.submissions : []);
@@ -108,6 +109,18 @@ export default function Submissions() {
       setError(e.message || "Failed to load submissions");
     } finally {
       setLoading(false);
+    }
+  }, [token]);
+
+  const handlePublish = async (submissionId) => {
+    setPublishing(submissionId);
+    try {
+      await publishResult(submissionId, token);
+      await load(); // Reload to update the published status
+    } catch (error) {
+      alert("Failed to publish result: " + error.message);
+    } finally {
+      setPublishing(null);
     }
   };
 
@@ -117,7 +130,7 @@ export default function Submissions() {
       return;
     }
     load();
-  }, [token]);
+  }, [token, load]);
 
   if (loading) return <div className="loading-center">Loading submissions...</div>;
   if (error) return <div className="alert-error">⚠ {error}</div>;
@@ -168,9 +181,23 @@ export default function Submissions() {
                   <td>{sub?.status || "—"}</td>
                   <td>{sub?.submittedAt ? new Date(sub.submittedAt).toLocaleDateString("en-IN") : "—"}</td>
                   <td>
-                    <button className="btn btn-ghost" onClick={() => setSelected(sub)}>
-                      Review →
-                    </button>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <button className="btn btn-ghost btn-sm" onClick={() => setSelected(sub)}>
+                        Review
+                      </button>
+                      {sub?.status === "checked" && !sub?.published && (
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => handlePublish(sub._id)}
+                          disabled={publishing === sub._id}
+                        >
+                          {publishing === sub._id ? "Publishing..." : "Publish"}
+                        </button>
+                      )}
+                      {sub?.published && (
+                        <span style={{ color: "var(--success)", fontWeight: "600" }}>Published</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
